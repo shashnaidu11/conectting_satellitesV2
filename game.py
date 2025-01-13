@@ -29,12 +29,32 @@ def draw():
     global total_time
     num=1
     screen.blit("bg",(0,0))
+    
     for satellite in satellites:
+        screen.draw.text(str(num),(satellite.pos[0],satellite.pos[1]+20))
         satellite.draw()
-        screen.draw.text(num,(satellite.pos[0],satellite.pos[1]+20))
         num+=1
     for line in lines:
-        screen.draw.line(line[0],line[1],"white")
+        screen.draw.line(line[0],line[1],(255,255,255))
+    
+    if next_satellite<number_of_satellites:
+        total_time=time()-start_time
+        screen.draw.text(str(round(total_time,1)),(10,10),fontsize=30)
+    else:
+        screen.draw.text(str(round(total_time,1)),(10,10),fontsize=30)
+
+def on_mouse_down(pos):
+    global next_satellite,lines
+    if next_satellite<number_of_satellites:
+        if satellites[next_satellite].collidepoint(pos):
+            if next_satellite:
+                lines.append((satellites[next_satellite-1],satellites[next_satellite]))
+            next_satellite+=1
+        else:
+            lines=[]
+            next_satellite=0
+            
+            
                         
 
 
@@ -42,7 +62,7 @@ def draw():
                
     
 
-
+create_satellites()
                                                         
 pgzrun.go()
 
